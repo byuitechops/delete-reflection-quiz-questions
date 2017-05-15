@@ -1,0 +1,14 @@
+{
+  "name": "delete-reflection-quiz-questions",
+  "version": "1.0.0",
+  "description": "Will delete the last quiz question, which should be a reflection question.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Scott Nicholes",
+  "license": "MIT",
+  "dependencies": {
+    "canvas-pagination": "git+https://github.com/byuitechops/canvas-pagination.git"
+  }
+}
