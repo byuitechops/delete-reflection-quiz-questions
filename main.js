@@ -6,26 +6,47 @@
 
 
 var fs = require('fs'),
-    token = require('./getToken.js')('./token.json'),
+    token,
     getAllPages = require('./canvas-pagination.js'),
     dsv = require('d3-dsv'),
-    domain = 'https://byuh.instructure.com',
-    course_id = '1458190',
-    apiCall = `/api/v1/courses/${course_id}/quizzes`,
+    domain = 'https://byui.instructure.com',
+    //domain = 'https://byuh.instructure.com',
+    course_id = '15',
+    //course_id = '1458190',
+    apiCall = `/api/v1/courses/${course_id}/quizzes`;
 
-    query = {
+
+function main() {
+    // Get all of the quizzes
+
+    // 1. Get the Token
+    var fileName = "token.json";
+    var token = getToken(fileName);
+
+    // 2. Make the query
+    var query = {
         access_token: token,
         per_page: 20
     };
 
+    // 3. Get all of the quizzes
+    getAllPages(domain, apiCall, query, function (err, quizes) {
+        //var onesWeLike = quizes.filter(quiz => quiz.title.match(/Level \d/) !== null);
+        var onesWeLike = quizes;
+
+        console.log("onesWeLike.length:", onesWeLike.length);
+        var colsWeWant = ['id', 'title', 'html_url', 'mobile_url'];
+        fs.writeFileSync('allTheQuizes.csv', dsv.csvFormat(onesWeLike));
+        fs.writeFileSync('allTheQuizesFilteredCols.csv', dsv.csvFormat(onesWeLike, colsWeWant));
+    });
 
 
-getAllPages(domain, apiCall, query, function (err, quizes) {
-    //var onesWeLike = quizes.filter(quiz => quiz.title.match(/Level \d/) !== null);
-    var onesWeLike = quizes;
+    // Search through the quizzes for the reflection question
 
-    console.log("onesWeLike.length:", onesWeLike.length);
-    var colsWeWant = ['id', 'title', 'html_url', 'mobile_url'];
-    fs.writeFileSync('allTheQuizes.csv', dsv.csvFormat(onesWeLike));
-    fs.writeFileSync('allTheQuizesFilteredCols.csv', dsv.csvFormat(onesWeLike, colsWeWant));
-});
+    // Delete the reflection question
+}
+
+function getToken(fileName) {
+    var fileObj = JSON.parse(fs.readFileSync(fileName, 'utf8'))
+    return fileObj.token;
+}
