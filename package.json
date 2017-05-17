@@ -1,8 +1,8 @@
 {
     "name": "delete-reflection-quiz-questions",
     "version": "1.0.0",
-    "description": "Will delete the last quiz question, which should be a reflection question.",
-    "main": "index.js",
+    "description": "Pulls all the quizzes in a given Canvas LMS course and deletes the reflection quiz question.",
+    "main": "main.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
